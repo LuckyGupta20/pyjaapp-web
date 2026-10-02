@@ -1,52 +1,65 @@
 import React, { useState } from 'react';
 import { Sparkles, ArrowRight, CheckCircle2, ShieldCheck, GraduationCap } from 'lucide-react';
+import CareerKineticLogo from './CareerKineticLogo';
+import { useUser } from '../context/UserContext';
 
 export default function LoginPage({ onLoginSuccess }) {
-  const [email, setEmail] = useState('aryan.sharma@pes.edu');
+  const { setUser, awardXP, showToast } = useUser();
+  const [email, setEmail] = useState('aryan.sharma@glbajaj.org');
   const [password, setPassword] = useState('password123');
-  const [selectedCollege, setSelectedCollege] = useState('PES University, Bengaluru');
+  const [selectedCollege, setSelectedCollege] = useState('GL Bajaj Institute of Technology, Greater Noida');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (email) {
+      const parts = email.split('@')[0].split('.');
+      const firstName = parts[0] ? parts[0].charAt(0).toUpperCase() + parts[0].slice(1) : 'Student';
+      const lastName = parts[1] ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1) : 'Aspirant';
+
+      setUser(prev => ({
+        ...prev,
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`,
+        email,
+        college: selectedCollege
+      }));
+    }
+    awardXP(50, 'Daily Login Streak Claimed!');
+    showToast('Signed in successfully! Welcome to your Daily Cockpit.', 'success');
     onLoginSuccess();
   };
 
   return (
-    <div className="min-h-[85vh] grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden card-warm border border-[#E7E5E4] my-6">
+    <div className="min-h-[85vh] grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden bg-[#FDFBF7] border border-[#E7E5E4] my-6 shadow-xs">
       
       {/* LEFT EDITORIAL STORY */}
-      <div className="p-8 sm:p-14 flex flex-col justify-between bg-[#F5F0E6] border-b lg:border-b-0 lg:border-r border-[#E7E5E4]">
+      <div className="p-8 sm:p-14 flex flex-col justify-between bg-[#FAF6EE] border-b lg:border-b-0 lg:border-r border-[#E7E5E4]">
         
         {/* Brand Header */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#C2410C] text-white flex items-center justify-center font-editorial text-lg font-bold shadow-sm">
-            P
-          </div>
-          <div>
-            <span className="font-editorial text-2xl font-bold text-[#1C1917]">PyJaApp</span>
-            <span className="block text-[11px] text-[#78716C] -mt-1 font-serif italic">The AI school with a human soul</span>
-          </div>
+          <CareerKineticLogo variant="full" size={42} />
         </div>
 
         {/* Narrative & Quote */}
         <div className="my-8 max-w-lg space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-terracotta text-xs font-bold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFEDD5] text-[#9A3412] border border-[#FED7AA] text-xs font-bold">
             <GraduationCap className="w-3.5 h-3.5 text-[#C2410C]" />
-            <span>2026 Campus Placement Batch</span>
+            <span>2026 Campus Placement Accelerator</span>
           </div>
 
           <h2 className="font-editorial text-3xl sm:text-4xl text-[#1C1917] font-normal leading-tight">
-            "Real mentors. Real intelligence. The future of campus placement has a heart."
+            &ldquo;Real mentors. Real intelligence. The future of campus placement has arrived.&rdquo;
           </h2>
 
           <p className="text-sm text-[#57534E] leading-relaxed">
-            Stop drowning in 50-hour generic video playlists. Join 42,000+ college engineers using 15-minute daily focus loops, real human mentors, and state-level diagnostic benchmarking to clear dream tech offers.
+            Stop drowning in 50-hour generic video playlists. Join 42,000+ college engineers using 15-minute daily focus loops, verified skill-snaps, and state-level diagnostic benchmarking to clear dream tech offers.
           </p>
 
           {/* Student Placement Testimonial Card */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/80 border border-[#E7E5E4] shadow-sm space-y-3">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E7E5E4] shadow-xs space-y-3">
             <p className="text-xs text-[#1C1917] italic leading-relaxed">
-              "Before PyJaApp, I memorized LeetCode answers and froze in every company OA. The 15-min daily human lessons and the State Rank benchmark showed me my real blindspots in trees and system design."
+              &ldquo;Before CareerKinetic, I memorized LeetCode answers and froze in company OAs. The 15-min daily human lessons and the State Rank benchmark showed me my real blindspots in trees and system design.&rdquo;
             </p>
             <div className="flex items-center gap-3 pt-1">
               <img 
@@ -56,7 +69,7 @@ export default function LoginPage({ onLoginSuccess }) {
               />
               <div className="text-xs">
                 <div className="font-bold text-[#1C1917]">Karthik Narayanan</div>
-                <div className="text-[#C2410C] font-semibold">Cleared Amazon SDE-1 • State Rank #14</div>
+                <div className="text-[#C2410C] font-semibold">Cleared Amazon SDE-1 &bull; State Rank #14</div>
               </div>
             </div>
           </div>
@@ -69,14 +82,14 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>₹14.5 LPA Avg. top offer</span>
+              <span>₹14.8 LPA Avg. top offer</span>
             </div>
           </div>
         </div>
 
         {/* Footer info */}
         <div className="text-[11px] text-[#78716C] flex items-center justify-between">
-          <span>© 2026 PyJaApp Academy</span>
+          <span>&copy; 2026 CareerKinetic Inc.</span>
           <span className="flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5 text-emerald-700" /> Student Data Encrypted</span>
         </div>
 
@@ -87,7 +100,7 @@ export default function LoginPage({ onLoginSuccess }) {
         
         <div className="mb-6">
           <h3 className="font-editorial text-2xl sm:text-3xl font-bold text-[#1C1917]">
-            Sign in to your Study Desk
+            Sign in to your Daily Cockpit
           </h3>
           <p className="text-xs text-[#78716C] mt-1">
             Pick up your daily 15-minute lesson and protect your 5-day streak.
@@ -100,7 +113,7 @@ export default function LoginPage({ onLoginSuccess }) {
           <button
             type="button"
             onClick={onLoginSuccess}
-            className="w-full py-3 px-4 rounded-xl border border-[#D6D3D1] bg-white hover:bg-[#F5F5F4] text-xs font-bold text-[#1C1917] flex items-center justify-center gap-3 transition shadow-sm"
+            className="w-full py-3 px-4 rounded-xl border border-[#D6D3D1] bg-white hover:bg-[#F5F5F4] text-xs font-bold text-[#1C1917] flex items-center justify-center gap-3 transition shadow-xs"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -114,7 +127,7 @@ export default function LoginPage({ onLoginSuccess }) {
           <div className="flex items-center gap-2 my-4">
             <div className="h-px bg-[#E7E5E4] flex-1"></div>
             <span className="text-[11px] text-[#A8A29E] uppercase font-semibold">or student email</span>
-            <div class="h-px bg-[#E7E5E4] flex-1"></div>
+            <div className="h-px bg-[#E7E5E4] flex-1"></div>
           </div>
 
           {/* College Selector */}
@@ -127,12 +140,13 @@ export default function LoginPage({ onLoginSuccess }) {
               onChange={(e) => setSelectedCollege(e.target.value)}
               className="w-full p-3 rounded-xl border border-[#D6D3D1] bg-[#FDFBF7] text-xs font-medium text-[#1C1917] focus:outline-none focus:border-[#C2410C]"
             >
+              <option>GL Bajaj Institute of Technology, Greater Noida</option>
+              <option>Galgotias College of Engineering &amp; Technology</option>
+              <option>AKTU / State University Affiliated Colleges</option>
+              <option>Bennett University, Greater Noida</option>
               <option>PES University, Bengaluru</option>
-              <option>BMS College of Engineering</option>
-              <option>RV College of Engineering</option>
-              <option>IIT Madras (Affiliate)</option>
-              <option>NIT Surathkal</option>
-              <option>Other VTU / State University</option>
+              <option>IIT Delhi / IIT Kanpur (Affiliate)</option>
+              <option>Other Engineering Institute</option>
             </select>
           </div>
 
@@ -169,16 +183,16 @@ export default function LoginPage({ onLoginSuccess }) {
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-xl btn-terracotta font-bold text-xs shadow-md transition flex items-center justify-center gap-2 mt-4"
+            className="w-full py-3.5 rounded-xl bg-[#C2410C] hover:bg-[#9A3412] text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-2 mt-4"
           >
-            <span>Enter Study Desk</span>
+            <span>Enter Daily Cockpit</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
           <p className="text-[11px] text-center text-[#78716C] pt-2">
             New student?{' '}
             <span className="text-[#C2410C] font-bold cursor-pointer hover:underline" onClick={onLoginSuccess}>
-              Register for Free (Karnataka Cohort)
+              Register for Free (NCR / All-India Cohort)
             </span>
           </p>
 
